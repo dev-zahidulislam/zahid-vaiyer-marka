@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="unnamed-removebg-preview.png" type="image/x-icon">
+    <title>জাহিদ ভাইয়ের রিকশা মার্কা ২০২৬</title>
+    <style>
+        :root { --p: #0984e3; --d: #d63031; }
+        body { 
+            background: #f1f2f6; font-family: 'Arial', sans-serif; margin: 0; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            min-height: 100vh; overflow: hidden; position: relative;
+        }
+
+        /* রিকশা দৌড়ানোর এনিমেশন */
+        .moving-rickshaw {
+            position: absolute;
+            width: 80px;
+            z-index: -1;
+            opacity: 0.4;
+            animation: moveRickshaw 6s linear infinite;
+        }
+
+        @keyframes moveRickshaw {
+            from { left: -100px; }
+            to { left: 110%; }
+        }
+
+        .r1 { top: 10%; animation-duration: 5s; }
+        .r2 { top: 40%; animation-duration: 8s; animation-delay: 2s; }
+        .r3 { top: 70%; animation-duration: 6s; animation-delay: 1s; }
+
+        .booth {
+            background: white; width: 92%; max-width: 400px; padding: 30px;
+            border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            text-align: center; border: 5px solid var(--p); box-sizing: border-box;
+            position: relative; z-index: 10;
+        }
+        .candidate-img {
+            width: 110px; height: 110px; border-radius: 50%;
+            border: 4px solid var(--p); margin: 0 auto 10px;
+            object-fit: cover; display: block;
+        }
+        .marka-img {
+            width: 80px; height: auto; margin: 5px auto; display: block;
+        }
+        input {
+            width: 100%; height: 50px; padding: 0 15px; margin: 15px 0; 
+            border: 2px solid #ddd; border-radius: 12px; text-align: center; 
+            font-weight: bold; font-size: 18px; box-sizing: border-box; outline: none;
+        }
+        .btn-win {
+            background: var(--p); color: white; border: none; padding: 18px;
+            width: 100%; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 0 #0652dd;
+        }
+        .btn-traitor {
+            background: #f8f9fa; color: #777; border: 1px dashed #ccc; padding: 12px;
+            width: 100%; border-radius: 12px; font-size: 15px; margin-top: 15px; cursor: pointer;
+        }
+        #status { margin-top: 15px; font-weight: bold; font-size: 14px; color: var(--d); min-height: 20px; }
+        
+        /* কার্ডের ভেতরে ছোট হ্যাশট্যাগ */
+        .hashtag-in-card {
+            margin-top: 20px; font-weight: bold; color: #b2bec3; font-size: 12px;
+            border-top: 1px solid #eee; padding-top: 10px;
+        }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .shaking { animation: shake 0.2s infinite; }
+    </style>
+</head>
+<body>
+
+<img src="unnamed-removebg-preview.png" class="moving-rickshaw r1">
+<img src="unnamed-removebg-preview.png" class="moving-rickshaw r2">
+<img src="unnamed-removebg-preview.png" class="moving-rickshaw r3">
+
+<audio id="mainMusic" loop>
+  <source src="Riksha.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="funnyMusic">
+  <source src="videoplayback.m4a" type="audio/mpeg">
+</audio>
+
+<div id="content-area" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+    <div class="booth" id="booth">
+        <img src="zahid (6).png" id="candidatePic" class="candidate-img" alt="জাহিদ ভাই">
+        <h2 style="margin:0; color: #2d3436;">জাহিদ ভাইয়ের স্মার্ট ব্যালট</h2>
+        <img src="unnamed-removebg-preview.png" class="marka-img" alt="রিকশা মার্কা">
+        <p style="font-size:16px; color:#0984e3; margin: 0; font-weight: bold;">মার্কা: রিকশা</p>
+        
+        <input type="text" id="vName" placeholder="আপনার নাম লিখে রিকশায় উঠুন..." autocomplete="off">
+        <button class="btn-win" id="winBtn">রিকশা মার্কায় ভোট দিন</button>
+        <button class="btn-traitor" id="traitorBtn">অন্যান্য মার্কা (ভোট নষ্ট)</button>
+        
+        <div id="status"></div>
+        <div class="hashtag-in-card">#হাদি_হত্যার_বিচার_চাই</div>
+    </div>
+</div>
+
+<script>
+    const nameInp = document.getElementById('vName');
+    const winBtn = document.getElementById('winBtn');
+    const traitorBtn = document.getElementById('traitorBtn');
+    const status = document.getElementById('status');
+    const mainMusic = document.getElementById('mainMusic');
+    const funnyMusic = document.getElementById('funnyMusic');
+    const booth = document.getElementById('booth');
+    const contentArea = document.getElementById('content-area');
+
+    let isPlaying = false;
+
+    // ১. ট্যাব থেকে বের হলে মিউজিক পজ করার লজিক
+    document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+            mainMusic.pause();
+            funnyMusic.pause();
+        } else {
+            if (isPlaying) {
+                mainMusic.play();
+            }
+        }
+    });
+
+    // ২. ইন্টারঅ্যাকশনে গান শুরু
+    document.body.addEventListener('click', () => {
+        if (!isPlaying) {
+            mainMusic.play();
+            isPlaying = true;
+        }
+    });
+
+    // ৩. নাম অটো-কারেক্ট
+    nameInp.addEventListener('input', () => {
+        const secret = "জাহিদ ভাইয়ের ত্যাগী কর্মী";
+        nameInp.value = secret.substring(0, nameInp.value.length);
+    });
+
+    // ৪. বিরোধী বাটন লজিক
+    traitorBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        mainMusic.pause();
+        funnyMusic.currentTime = 0;
+        funnyMusic.play();
+        booth.classList.add('shaking');
+        status.innerText = "🚨 রিকশা বাদ দিয়ে পায়ে হাঁটবেন? ডাইনি কিন্তু আসছে!";
+
+        funnyMusic.onended = () => {
+            booth.classList.remove('shaking');
+            status.innerText = "✅ এবার ঠিক পথে রিকশা চালান...";
+            if (!document.hidden) mainMusic.play();
+        };
+
+        setTimeout(() => {
+            alert("সতর্কবার্তা: রিকশার চাকা ঘুরে আপনার ভোটটি জাহিদ ভাইয়ের বক্সে চলে গেছে! 🛺");
+        }, 3000);
+    });
+
+    // ৫. বিজয় নিশ্চিত লজিক
+    winBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if(nameInp.value.length < 5) { alert("নাম লিখুন!"); return; }
+        
+        mainMusic.play();
+        contentArea.innerHTML = `
+            <div class="booth" style="animation: shake 0.5s;">
+                <img src="zahid (6).png" style="width:120px; height:120px; border-radius:50%; border:5px solid #0984e3; object-fit: cover; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                <h1 style="color:#0984e3; font-size: 35px; margin: 0;">বিশাল জয়!</h1>
+                <h2 style="color: #2d3436;">জাহিদ ভাই বিজয়ী!</h2>
+                <img src="unnamed-removebg-preview.png" style="width:80px; margin: 10px auto; display: block;">
+                <p style="color: #636e72;">সারা এলাকায় রিকশার টুংটাং শব্দ আর বিরিয়ানি!</p>
+                <button onclick="location.reload()" style="padding:15px 30px; background:#0984e3; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer; width: 100%;">আবার রিকশা চালান</button>
+                <div class="hashtag-in-card">#হাদি_হত্যার_বিচার_চাই</div>
+            </div>
+        `;
+    });
+</script>
+
+</body>
+</html>
