@@ -7,113 +7,92 @@
     <title>জাহিদ ভাইয়ের রিকশা মার্কা ২০২৬</title>
     <style>
         :root { --p: #0984e3; --d: #d63031; }
-        
-        /* পুরো বডি লক করা হয়েছে */
-        * { 
-            box-sizing: border-box; 
-            margin: 0; padding: 0; 
-            touch-action: manipulation; /* জুম বা স্ক্রল আটকাবে */
-        }
 
+        /* ১. বডি এবং এইচটিএমএল লক করা হয়েছে স্ক্রল বন্ধ করতে */
         html, body { 
-            width: 100vw; 
-            height: 100vh; 
-            overflow: hidden; 
-            background: #f1f2f6; 
-            font-family: 'Arial', sans-serif;
-            position: fixed; /* স্ক্রলবার আসার সব রাস্তা বন্ধ */
+            margin: 0; padding: 0; 
+            width: 100vw; height: 100vh; 
+            overflow: hidden; /* স্ক্রলবার আসবে না */
+            background: #f1f2f6; font-family: 'Arial', sans-serif;
+            position: fixed; /* মোবাইল ব্রাউজারে বাউন্স ইফেক্ট বন্ধ করবে */
         }
 
-        /* রিকশা অ্যানিমেশন কন্টেইনার */
-        .animation-area {
-            position: absolute;
-            top: 0; left: 0;
+        body { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        }
+
+        /* রিকশা দৌড়ানোর এনিমেশন এরিয়া */
+        .animation-container {
+            position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            overflow: hidden;
-            z-index: 1;
+            overflow: hidden; z-index: 1;
         }
 
         .moving-rickshaw {
-            position: absolute; width: 60px; opacity: 0.25;
+            position: absolute; width: 80px; z-index: -1; opacity: 0.4;
             animation: moveRickshaw 6s linear infinite;
         }
 
         @keyframes moveRickshaw {
-            from { transform: translateX(-100px); }
-            to { transform: translateX(120vw); }
+            from { transform: translateX(-120px); }
+            to { transform: translateX(115vw); }
         }
 
-        .r1 { top: 15%; animation-duration: 5s; }
-        .r2 { top: 45%; animation-duration: 8s; animation-delay: 2s; }
-        .r3 { top: 75%; animation-duration: 6s; animation-delay: 1s; }
+        .r1 { top: 10%; animation-duration: 5s; }
+        .r2 { top: 40%; animation-duration: 8s; animation-delay: 2s; }
+        .r3 { top: 70%; animation-duration: 6s; animation-delay: 1s; }
 
-        /* মেইন ডিসপ্লে */
-        .main-wrapper {
-            position: relative;
-            z-index: 10;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            width: 100%; 
-            height: 100%;
-            padding: 15px;
+        /* ২. কার্ডটি সেন্টারে রাখার কন্টেইনার */
+        #content-area {
+            position: relative; z-index: 10;
+            width: 100%; display: flex; justify-content: center; padding: 15px;
         }
 
         .booth {
-            background: white; 
-            width: 100%; 
-            max-width: 340px; 
-            padding: 20px;
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center; 
-            border: 4px solid var(--p);
-            animation: fadeIn 0.5s ease-in;
+            background: white; width: 100%; max-width: 380px; padding: 30px;
+            border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            text-align: center; border: 5px solid var(--p); box-sizing: border-box;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-
         .candidate-img {
-            width: 85px; height: 85px; border-radius: 50%;
-            border: 3px solid var(--p); margin: 0 auto 8px;
+            width: 110px; height: 110px; border-radius: 50%;
+            border: 4px solid var(--p); margin: 0 auto 10px;
             object-fit: cover; display: block;
         }
 
-        .marka-img { width: 60px; height: auto; margin: 5px auto; display: block; }
-
-        h2 { font-size: 18px; margin: 5px 0; color: #2d3436; }
+        .marka-img { width: 80px; height: auto; margin: 5px auto; display: block; }
 
         input {
-            width: 100%; height: 45px; padding: 0 15px; margin: 12px 0; 
-            border: 2px solid #ddd; border-radius: 10px; text-align: center; 
-            font-weight: bold; font-size: 15px; outline: none;
+            width: 100%; height: 50px; padding: 0 15px; margin: 15px 0; 
+            border: 2px solid #ddd; border-radius: 12px; text-align: center; 
+            font-weight: bold; font-size: 18px; box-sizing: border-box; outline: none;
         }
 
         .btn-win {
-            background: var(--p); color: white; border: none; padding: 14px;
-            width: 100%; border-radius: 10px; font-size: 17px; font-weight: bold; 
-            cursor: pointer; box-shadow: 0 4px 0 #0652dd;
+            background: var(--p); color: white; border: none; padding: 18px;
+            width: 100%; border-radius: 12px; font-size: 20px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 0 #0652dd;
         }
 
         .btn-traitor {
-            background: #f8f9fa; color: #777; border: 1px dashed #ccc; padding: 8px;
-            width: 100%; border-radius: 10px; font-size: 13px; margin-top: 10px; cursor: pointer;
+            background: #f8f9fa; color: #777; border: 1px dashed #ccc; padding: 12px;
+            width: 100%; border-radius: 12px; font-size: 15px; margin-top: 15px; cursor: pointer;
         }
 
-        #status { margin-top: 10px; font-weight: bold; font-size: 12px; color: var(--d); min-height: 16px; }
+        #status { margin-top: 15px; font-weight: bold; font-size: 14px; color: var(--d); min-height: 20px; }
         
         .hashtag-in-card {
-            margin-top: 15px; font-weight: bold; color: #b2bec3; font-size: 11px;
-            border-top: 1px solid #eee; padding-top: 8px;
+            margin-top: 20px; font-weight: bold; color: #b2bec3; font-size: 12px;
+            border-top: 1px solid #eee; padding-top: 10px;
         }
 
-        .shaking { animation: shake 0.2s infinite; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .shaking { animation: shake 0.2s infinite; }
     </style>
 </head>
 <body>
 
-<div class="animation-area">
+<div class="animation-container">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r1">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r2">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r3">
@@ -122,16 +101,16 @@
 <audio id="mainMusic" loop><source src="Riksha.mp3" type="audio/mpeg"></audio>
 <audio id="funnyMusic"><source src="videoplayback.m4a" type="audio/mpeg"></audio>
 
-<div class="main-wrapper" id="content-area">
+<div id="content-area">
     <div class="booth" id="booth">
-        <img src="zahid (6).png" class="candidate-img" alt="জাহিদ ভাই">
-        <h2>জাহিদ ভাইয়ের স্মার্ট ব্যালট</h2>
+        <img src="zahid (6).png" id="candidatePic" class="candidate-img" alt="জাহিদ ভাই">
+        <h2 style="margin:0; color: #2d3436;">জাহিদ ভাইয়ের স্মার্ট ব্যালট</h2>
         <img src="unnamed-removebg-preview.png" class="marka-img" alt="রিকশা মার্কা">
-        <p style="font-size:13px; color:#0984e3; margin: 0; font-weight: bold;">মার্কা: রিকশা</p>
+        <p style="font-size:16px; color:#0984e3; margin: 0; font-weight: bold;">মার্কা: রিকশা</p>
         
-        <input type="text" id="vName" placeholder="আপনার নাম লিখুন..." autocomplete="off">
-        <button class="btn-win" id="winBtn">ভোট দিন</button>
-        <button class="btn-traitor" id="traitorBtn">অন্যান্য মার্কা</button>
+        <input type="text" id="vName" placeholder="আপনার নাম লিখে রিকশায় উঠুন..." autocomplete="off">
+        <button class="btn-win" id="winBtn">রিকশা মার্কায় ভোট দিন</button>
+        <button class="btn-traitor" id="traitorBtn">অন্যান্য মার্কা (ভোট নষ্ট)</button>
         
         <div id="status"></div>
         <div class="hashtag-in-card">#হাদি_হত্যার_বিচার_চাই</div>
@@ -150,7 +129,6 @@
 
     let isPlaying = false;
 
-    // ট্যাব থেকে বের হলে গান পজ
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) { mainMusic.pause(); funnyMusic.pause(); }
         else if (isPlaying) { mainMusic.play(); }
@@ -167,28 +145,41 @@
 
     traitorBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        mainMusic.pause(); funnyMusic.currentTime = 0; funnyMusic.play();
+        mainMusic.pause();
+        funnyMusic.currentTime = 0;
+        funnyMusic.play();
         booth.classList.add('shaking');
-        status.innerText = "🚨 ভুল পথ! বড় ভাই আসছে!";
-        funnyMusic.onended = () => { booth.classList.remove('shaking'); status.innerText = ""; mainMusic.play(); };
-        setTimeout(() => { alert("ভোটটি জাহিদ ভাইয়ের রিকশায় জমা হলো! 🛺"); }, 3000);
+        status.innerText = "🚨 রিকশা বাদ দিয়ে পায়ে হাঁটবেন? ডাইনি কিন্তু আসছে!";
+
+        funnyMusic.onended = () => {
+            booth.classList.remove('shaking');
+            status.innerText = "✅ এবার ঠিক পথে রিকশা চালান...";
+            if (!document.hidden) mainMusic.play();
+        };
+
+        setTimeout(() => {
+            alert("সতর্কবার্তা: রিকশার চাকা ঘুরে আপনার ভোটটি জাহিদ ভাইয়ের বক্সে চলে গেছে! 🛺");
+        }, 3000);
     });
 
     winBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if(nameInp.value.length < 5) { alert("নাম লিখুন!"); return; }
+        
         mainMusic.play();
         contentArea.innerHTML = `
-            <div class="booth">
-                <img src="zahid (6).png" style="width:90px; height:90px; border-radius:50%; border:3px solid #0984e3; margin-bottom: 10px; display: block; margin: 0 auto 10px;">
-                <h1 style="color:#0984e3; font-size: 24px; margin: 0;">বিশাল জয়!</h1>
-                <p style="font-size: 14px;">জাহিদ ভাই বিজয়ী!</p>
-                <img src="unnamed-removebg-preview.png" style="width:60px; margin: 10px auto; display: block;">
-                <button onclick="location.reload()" style="padding:12px; background:#0984e3; color:white; border:none; border-radius:10px; width: 100%; font-weight: bold; cursor: pointer;">আবার দেখুন</button>
+            <div class="booth" style="animation: shake 0.5s;">
+                <img src="zahid (6).png" style="width:110px; height:110px; border-radius:50%; border:4px solid #0984e3; object-fit: cover; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto;">
+                <h1 style="color:#0984e3; font-size: 30px; margin: 0;">বিশাল জয়!</h1>
+                <h2 style="color: #2d3436;">জাহিদ ভাই বিজয়ী!</h2>
+                <img src="unnamed-removebg-preview.png" style="width:80px; margin: 10px auto; display: block;">
+                <p style="color: #636e72;">সারা এলাকায় রিকশার টুংটাং শব্দ আর বিরিয়ানি!</p>
+                <button onclick="location.reload()" style="padding:15px; background:#0984e3; color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer; width: 100%;">আবার রিকশা চালান</button>
                 <div class="hashtag-in-card">#হাদি_হত্যার_বিচার_চাই</div>
             </div>
         `;
     });
 </script>
+
 </body>
 </html>
