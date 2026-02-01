@@ -8,21 +8,28 @@
     <style>
         :root { --p: #0984e3; --d: #d63031; }
         
-        * { box-sizing: border-box; }
-
-        body, html { 
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
-            overflow: hidden; /* পুরো পেজের স্ক্রল বন্ধ */
-            background: #f1f2f6; font-family: 'Arial', sans-serif;
+        /* পুরো বডি লক করা হয়েছে */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; padding: 0; 
+            touch-action: manipulation; /* জুম বা স্ক্রল আটকাবে */
         }
 
-        /* রিকশা এনিমেশন এরিয়া */
-        .animation-container {
-            position: fixed;
+        html, body { 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            background: #f1f2f6; 
+            font-family: 'Arial', sans-serif;
+            position: fixed; /* স্ক্রলবার আসার সব রাস্তা বন্ধ */
+        }
+
+        /* রিকশা অ্যানিমেশন কন্টেইনার */
+        .animation-area {
+            position: absolute;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            overflow: hidden; /* রিকশা বাইরে গেলেও স্ক্রল আসবে না */
+            width: 100%; height: 100%;
+            overflow: hidden;
             z-index: 1;
         }
 
@@ -30,21 +37,26 @@
             position: absolute; width: 60px; opacity: 0.25;
             animation: moveRickshaw 6s linear infinite;
         }
+
         @keyframes moveRickshaw {
-            from { left: -80px; }
-            to { left: 110vw; } /* স্ক্রিনের ওপাড়ে চলে যাবে */
+            from { transform: translateX(-100px); }
+            to { transform: translateX(120vw); }
         }
-        .r1 { top: 10%; animation-duration: 5s; }
+
+        .r1 { top: 15%; animation-duration: 5s; }
         .r2 { top: 45%; animation-duration: 8s; animation-delay: 2s; }
-        .r3 { top: 80%; animation-duration: 6s; animation-delay: 1s; }
+        .r3 { top: 75%; animation-duration: 6s; animation-delay: 1s; }
 
         /* মেইন ডিসপ্লে */
         .main-wrapper {
             position: relative;
             z-index: 10;
-            display: flex; align-items: center; justify-content: center;
-            width: 100%; height: 100%;
-            padding: 10px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            width: 100%; 
+            height: 100%;
+            padding: 15px;
         }
 
         .booth {
@@ -56,22 +68,25 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             text-align: center; 
             border: 4px solid var(--p);
+            animation: fadeIn 0.5s ease-in;
         }
 
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
         .candidate-img {
-            width: 90px; height: 90px; border-radius: 50%;
+            width: 85px; height: 85px; border-radius: 50%;
             border: 3px solid var(--p); margin: 0 auto 8px;
             object-fit: cover; display: block;
         }
 
-        .marka-img { width: 65px; height: auto; margin: 5px auto; display: block; }
+        .marka-img { width: 60px; height: auto; margin: 5px auto; display: block; }
 
         h2 { font-size: 18px; margin: 5px 0; color: #2d3436; }
 
         input {
             width: 100%; height: 45px; padding: 0 15px; margin: 12px 0; 
             border: 2px solid #ddd; border-radius: 10px; text-align: center; 
-            font-weight: bold; font-size: 15px; outline: none; -webkit-appearance: none;
+            font-weight: bold; font-size: 15px; outline: none;
         }
 
         .btn-win {
@@ -92,13 +107,13 @@
             border-top: 1px solid #eee; padding-top: 8px;
         }
 
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         .shaking { animation: shake 0.2s infinite; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
     </style>
 </head>
 <body>
 
-<div class="animation-container">
+<div class="animation-area">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r1">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r2">
     <img src="unnamed-removebg-preview.png" class="moving-rickshaw r3">
@@ -135,6 +150,7 @@
 
     let isPlaying = false;
 
+    // ট্যাব থেকে বের হলে গান পজ
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) { mainMusic.pause(); funnyMusic.pause(); }
         else if (isPlaying) { mainMusic.play(); }
